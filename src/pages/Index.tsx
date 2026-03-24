@@ -10,6 +10,7 @@ import TestimonialsSection from "@/components/TestimonialsSection";
 import FAQSection from "@/components/FAQSection";
 import ContactSection from "@/components/ContactSection";
 import CTASection from "@/components/CTASection";
+import RequestFormSection from "@/components/RequestFormSection";
 import Footer from "@/components/Footer";
 
 const Index = () => (
@@ -26,6 +27,7 @@ const Index = () => (
     <FAQSection />
     <ContactSection />
     <CTASection />
+    <RequestFormSection />
     <Footer />
   </>
 );
