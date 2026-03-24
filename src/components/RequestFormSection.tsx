@@ -5,10 +5,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import ConsentCheckbox from "@/components/ConsentCheckbox";
 
 const RequestFormSection = () => {
   const { toast } = useToast();
   const [loading, setLoading] = useState(false);
+  const [consent, setConsent] = useState(false);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -143,10 +145,12 @@ const RequestFormSection = () => {
                   />
                 </div>
 
+                <ConsentCheckbox id="request-consent" checked={consent} onCheckedChange={setConsent} />
+
                 <Button
                   type="submit"
                   size="lg"
-                  disabled={loading}
+                  disabled={loading || !consent}
                   className="w-full text-base font-semibold gap-2"
                 >
                   {loading ? "Отправка…" : (
@@ -156,10 +160,6 @@ const RequestFormSection = () => {
                     </>
                   )}
                 </Button>
-
-                <p className="text-xs text-muted-foreground text-center">
-                  Нажимая кнопку, вы соглашаетесь с обработкой персональных данных
-                </p>
               </form>
             </div>
           </motion.div>

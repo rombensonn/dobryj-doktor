@@ -1,8 +1,11 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Star, MapPin, Clock } from "lucide-react";
 import heroImg from "@/assets/hero-vet.jpg";
+import ConsentCheckbox from "@/components/ConsentCheckbox";
 
 const HeroSection = () => {
+  const [consent, setConsent] = useState(false);
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
       <div className="absolute inset-0">
@@ -79,9 +82,11 @@ const HeroSection = () => {
                   rows={3}
                   className="w-full px-4 py-3 rounded-md bg-secondary text-foreground placeholder:text-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-none"
                 />
+                <ConsentCheckbox id="hero-consent" checked={consent} onCheckedChange={setConsent} />
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-md font-semibold text-sm text-primary-foreground transition-all hover:opacity-90"
+                  disabled={!consent}
+                  className="w-full py-3 rounded-md font-semibold text-sm text-primary-foreground transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
                   style={{ background: "var(--gradient-primary)" }}
                 >
                   Записаться на приём
