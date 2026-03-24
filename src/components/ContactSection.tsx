@@ -80,7 +80,7 @@ const ContactSection = () => (
           className="rounded-lg overflow-hidden border border-border h-80 lg:h-auto min-h-[320px]"
         >
           <iframe
-            src="https://yandex.ru/map-widget/v1/?um=constructor%3A8c1d2e3f4a5b6c7d&source=constructorLink&ll=38.004722%2C55.922778&z=16&pt=38.004722%2C55.922778%2Cpm2rdm"
+            src="https://yandex.ru/map-widget/v1/?ll=38.0038%2C55.9165&z=17&pt=38.0038%2C55.9165%2Cpm2rdm&text=%D0%A9%D1%91%D0%BB%D0%BA%D0%BE%D0%B2%D0%BE%2C%20%D1%83%D0%BB.%20%D0%9A%D1%80%D0%B0%D1%81%D0%BD%D0%BE%D0%B7%D0%BD%D0%B0%D0%BC%D0%B5%D0%BD%D1%81%D0%BA%D0%B0%D1%8F%2C%2017%D0%91"
             width="100%"
             height="100%"
             frameBorder="0"
