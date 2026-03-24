@@ -76,7 +76,7 @@ const TestimonialsSection = () => (
             <p className="text-sm text-muted-foreground mb-4 leading-relaxed line-clamp-4">{r.text}</p>
             <div className="border-t border-border pt-3">
               <p className="text-sm font-semibold text-card-foreground">{r.name}</p>
-              <p className="text-xs text-muted-foreground">{r.level} · {r.date}</p>
+              <p className="text-xs text-muted-foreground">{r.date}</p>
             </div>
           </motion.div>
         ))}
