@@ -1,11 +1,23 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
-import { Star, MapPin, Clock } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Star, MapPin, Clock, CheckCircle2 } from "lucide-react";
 import heroImg from "@/assets/hero-vet.jpg";
 import ConsentCheckbox from "@/components/ConsentCheckbox";
 
 const HeroSection = () => {
   const [consent, setConsent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      setSubmitted(true);
+    }, 1200);
+  };
+
   return (
     <section className="relative min-h-screen flex items-center pt-16 overflow-hidden">
       <div className="absolute inset-0">
@@ -53,45 +65,84 @@ const HeroSection = () => {
             transition={{ duration: 0.7, delay: 0.2 }}
           >
             <div className="bg-card rounded-lg p-6 md:p-8" style={{ boxShadow: "var(--shadow-elevated)" }}>
-              <h2 className="font-display text-2xl font-bold text-card-foreground mb-2">Запишитесь на приём</h2>
-              <p className="text-sm text-muted-foreground mb-6">Перезвоним в течение 15 минут</p>
+              <AnimatePresence mode="wait">
+                {submitted ? (
+                  <motion.div
+                    key="success"
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    className="flex flex-col items-center justify-center text-center py-8"
+                  >
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                    >
+                      <CheckCircle2 className="h-14 w-14 text-primary mb-3" />
+                    </motion.div>
+                    <h2 className="font-display text-xl font-bold text-card-foreground mb-2">Спасибо!</h2>
+                    <p className="text-sm text-muted-foreground mb-5 max-w-xs">
+                      Мы получили вашу заявку и перезвоним в течение 15 минут.
+                    </p>
+                    <button
+                      onClick={() => { setSubmitted(false); setConsent(false); }}
+                      className="text-sm font-medium text-primary hover:underline"
+                    >
+                      Отправить ещё одну заявку
+                    </button>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="form"
+                    initial={{ opacity: 1 }}
+                    exit={{ opacity: 0, y: -20 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <h2 className="font-display text-2xl font-bold text-card-foreground mb-2">Запишитесь на приём</h2>
+                    <p className="text-sm text-muted-foreground mb-6">Перезвоним в течение 15 минут</p>
 
-              <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="text"
-                  placeholder="Ваше имя"
-                  className="w-full px-4 py-3 rounded-md bg-secondary text-foreground placeholder:text-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring text-sm"
-                />
-                <input
-                  type="tel"
-                  placeholder="Номер телефона"
-                  className="w-full px-4 py-3 rounded-md bg-secondary text-foreground placeholder:text-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring text-sm"
-                />
-                <select className="w-full px-4 py-3 rounded-md bg-secondary text-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring text-sm">
-                  <option value="">Выберите услугу</option>
-                  <option>Первичный приём</option>
-                  <option>Вакцинация</option>
-                  <option>Хирургия</option>
-                  <option>УЗИ / Рентген</option>
-                  <option>Стерилизация / Кастрация</option>
-                  <option>Лабораторные анализы</option>
-                  <option>Другое</option>
-                </select>
-                <textarea
-                  placeholder="Опишите проблему (необязательно)"
-                  rows={3}
-                  className="w-full px-4 py-3 rounded-md bg-secondary text-foreground placeholder:text-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-none"
-                />
-                <ConsentCheckbox id="hero-consent" checked={consent} onCheckedChange={setConsent} />
-                <button
-                  type="submit"
-                  disabled={!consent}
-                  className="w-full py-3 rounded-md font-semibold text-sm text-primary-foreground transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
-                  style={{ background: "var(--gradient-primary)" }}
-                >
-                  Записаться на приём
-                </button>
-              </form>
+                    <form className="space-y-4" onSubmit={handleSubmit}>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Ваше имя"
+                        className="w-full px-4 py-3 rounded-md bg-secondary text-foreground placeholder:text-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+                      />
+                      <input
+                        type="tel"
+                        required
+                        placeholder="Номер телефона"
+                        className="w-full px-4 py-3 rounded-md bg-secondary text-foreground placeholder:text-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring text-sm"
+                      />
+                      <select className="w-full px-4 py-3 rounded-md bg-secondary text-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring text-sm">
+                        <option value="">Выберите услугу</option>
+                        <option>Первичный приём</option>
+                        <option>Вакцинация</option>
+                        <option>Хирургия</option>
+                        <option>УЗИ / Рентген</option>
+                        <option>Стерилизация / Кастрация</option>
+                        <option>Лабораторные анализы</option>
+                        <option>Другое</option>
+                      </select>
+                      <textarea
+                        placeholder="Опишите проблему (необязательно)"
+                        rows={3}
+                        className="w-full px-4 py-3 rounded-md bg-secondary text-foreground placeholder:text-muted-foreground border border-border focus:outline-none focus:ring-2 focus:ring-ring text-sm resize-none"
+                      />
+                      <ConsentCheckbox id="hero-consent" checked={consent} onCheckedChange={setConsent} />
+                      <button
+                        type="submit"
+                        disabled={!consent || loading}
+                        className="w-full py-3 rounded-md font-semibold text-sm text-primary-foreground transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed"
+                        style={{ background: "var(--gradient-primary)" }}
+                      >
+                        {loading ? "Отправка…" : "Записаться на приём"}
+                      </button>
+                    </form>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         </div>
