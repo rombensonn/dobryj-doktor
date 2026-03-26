@@ -11,8 +11,22 @@ const faqs = [
 ];
 
 const FAQSection = () => (
-  <section id="faq" className="py-20 md:py-28 bg-secondary">
-    <div className="container max-w-3xl">
+  <section id="faq" className="relative py-20 md:py-28 overflow-hidden">
+    {/* Animated gradient background */}
+    <div className="absolute inset-0 -z-10">
+      <div
+        className="absolute inset-0 animate-faq-gradient"
+        style={{
+          background: "linear-gradient(135deg, hsl(var(--primary) / 0.08), hsl(var(--accent) / 0.12), hsl(var(--secondary)), hsl(var(--primary) / 0.06), hsl(var(--accent) / 0.1))",
+          backgroundSize: "400% 400%",
+        }}
+      />
+      {/* Decorative blurred circles */}
+      <div className="absolute top-10 left-[10%] w-72 h-72 rounded-full bg-primary/10 blur-3xl animate-faq-float" />
+      <div className="absolute bottom-10 right-[10%] w-96 h-96 rounded-full bg-accent/10 blur-3xl animate-faq-float-reverse" />
+    </div>
+
+    <div className="container max-w-3xl relative">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -21,6 +35,7 @@ const FAQSection = () => (
       >
         <span className="text-sm font-semibold text-primary uppercase tracking-wider">FAQ</span>
         <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mt-3">Частые вопросы</h2>
+        <p className="text-muted-foreground mt-3 max-w-lg mx-auto">Ответы на самые популярные вопросы наших клиентов</p>
       </motion.div>
 
       <motion.div
@@ -30,14 +45,22 @@ const FAQSection = () => (
       >
         <Accordion type="single" collapsible className="space-y-3">
           {faqs.map((f, i) => (
-            <AccordionItem key={i} value={`faq-${i}`} className="bg-card rounded-lg border border-border px-6">
-              <AccordionTrigger className="text-left font-display text-base font-semibold text-card-foreground hover:no-underline">
-                {f.q}
-              </AccordionTrigger>
-              <AccordionContent className="text-sm text-muted-foreground">
-                {f.a}
-              </AccordionContent>
-            </AccordionItem>
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+            >
+              <AccordionItem value={`faq-${i}`} className="bg-card/80 backdrop-blur-sm rounded-xl border border-border/60 px-6 shadow-sm hover:shadow-md transition-shadow duration-300">
+                <AccordionTrigger className="text-left font-display text-base font-semibold text-card-foreground hover:no-underline">
+                  {f.q}
+                </AccordionTrigger>
+                <AccordionContent className="text-sm text-muted-foreground">
+                  {f.a}
+                </AccordionContent>
+              </AccordionItem>
+            </motion.div>
           ))}
         </Accordion>
       </motion.div>
